@@ -1,0 +1,51 @@
+import colors from '../constants/colors.js';
+
+class Player {
+  cards = [];
+  constructor(name) {
+    this.name = name;
+  }
+
+  get cardCount() {
+    return this.cards.length;
+  }
+
+  getCards(cards) {
+    this.cards = cards;
+  }
+
+  getCard(card) {
+    this.cards.push(card);
+  }
+
+  canPutCards(stage) {
+    return this.cards.filter(card => card.canPut(stage));
+  }
+
+  selectCardIndex(stage) {
+    const cards = this.canPutCards(stage);
+    if(cards.length === 0) {
+      return null;
+    }
+    // Card Selection Logic
+    return cards[Math.floor(Math.random() * cards.length)];
+    // return Math.floor(Math.random() * this.cards.length);
+  }
+
+  selectColor() {
+    // Color Selection Logic
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  putCard(stage) {
+    const card = this.selectCardIndex(stage);
+    console.log(`${this.name} put ${card?.name}`);
+    if(card === null) {
+      return null
+    }
+    this.cards = this.cards.filter(c => c !== card);
+    return card;
+  }
+}
+
+export default Player;
