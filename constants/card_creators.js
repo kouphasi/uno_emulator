@@ -8,9 +8,9 @@ const availableNumbers = Array.from({length: 10}, (_, i) => i);
 
 const numCardCreators = colors.map( color => availableNumbers.map( num => () => new NumCard({name: `${color.name}${num}`, num, color}))).flat();
 
-const CardCreators = [
+const cardCreators = [
   ...numCardCreators,
   ...specialCardCreators,
 ];
 
-export default CardCreators;
+export default cardCreators;
