@@ -1,5 +1,5 @@
 
-import allCards from '../constants/all_cards.js';
+import cardCreators from '../constants/card_creators.js';
 
 class Stage {
   players = [];
@@ -20,11 +20,11 @@ class Stage {
   }
 
   get currentPlayer() {
-    return this.players[this.playerIndex];
+    return this.playablePlayers[this.playerIndex];
   }
 
   get playerIndex() {
-    const playerCount = this.players.length;
+    const playerCount = this.playablePlayers.length;
     return this.currentPlayerIndex % playerCount < 0
       ? this.currentPlayerIndex % playerCount + playerCount
       : this.currentPlayerIndex % playerCount;
@@ -43,7 +43,8 @@ class Stage {
   }
 
   draw() {
-    return allCards[Math.floor(Math.random() * allCards.length)];
+    console.log('draw');
+    return cardCreators[Math.floor(Math.random() * cardCreators.length)]();
   }
 
   reverse() {
