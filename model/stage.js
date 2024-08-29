@@ -20,14 +20,23 @@ class Stage {
   }
 
   get currentPlayer() {
-    return this.playablePlayers[this.playerIndex];
+    return this.getPlayer(this.playerIndex(this.currentPlayerIndex));
   }
 
-  get playerIndex() {
+  get previousPlayer() {
+    const previousIndex = this.currentPlayerIndex - (this.isOpposite ? -1 : 1);
+    return this.getPlayer(this.playerIndex(this.currentPlayerIndex - 1));
+  }
+
+  getPlayer(index) {
+    return this.playablePlayers[index];
+  }
+
+  playerIndex(index) {
     const playerCount = this.playablePlayers.length;
-    return this.currentPlayerIndex % playerCount < 0
-      ? this.currentPlayerIndex % playerCount + playerCount
-      : this.currentPlayerIndex % playerCount;
+    return index % playerCount < 0
+      ? index % playerCount + playerCount
+      : index % playerCount;
   }
 
   get latestCard() {
@@ -142,6 +151,10 @@ class Stage {
       card = this.commitWithDoubleChance();
       console.log('put card', card);
       this.putCard(card);
+    }
+    if((this.previousPlayer.cardCount == 1 && !this.previousPlayer.isUno) || (this.previousPlayer.cardCount > 1 && this.previousPlayer.isUno)) {
+      this.previousPlayer.getCard(this.draw());
+      this.previousPlayer.getCard(this.draw());
     }
     this.nextTurn(card);
     console.log('end turn');
