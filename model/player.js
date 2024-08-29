@@ -32,7 +32,7 @@ class Player {
     return this.cards.filter(card => card.canPut(stage));
   }
 
-  selectCardIndex(stage) {
+  selectCard(stage) {
     const cards = this.canPutCards(stage);
     if(cards.length === 0) {
       return null;
@@ -49,7 +49,7 @@ class Player {
   }
 
   putCard(stage) {
-    const card = this.selectCardIndex(stage);
+    const card = this.selectCard(stage);
     console.log(`${this.name} put ${card?.name}`);
     if(card === null) {
       return null
