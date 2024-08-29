@@ -1,4 +1,4 @@
 services:
   web:
     build: .
-    command: node main.js
+    command: node index.js
