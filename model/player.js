@@ -16,6 +16,7 @@ class Player {
   }
 
   getCard(card) {
+    console.log(`${this.name} got ${card.name}`);
     this.cards.push(card);
     this.isUno = false;
   }
