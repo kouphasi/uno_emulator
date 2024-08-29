@@ -2,6 +2,7 @@ import colors from '../constants/colors.js';
 
 class Player {
   cards = [];
+  isUno = false;
   constructor(name) {
     this.name = name;
   }
@@ -11,11 +12,19 @@ class Player {
   }
 
   getCards(cards) {
-    this.cards = cards;
+    this.cards = [...this.cards, ...cards];
   }
 
   getCard(card) {
     this.cards.push(card);
+    this.isUno = false;
+  }
+
+  sayUno() {
+    this.isUno = Math.random() < 0.5;
+    if(this.isUno) {
+      console.log(`${this.name} said UNO!`);
+    }
   }
 
   canPutCards(stage) {
@@ -28,6 +37,7 @@ class Player {
       return null;
     }
     // Card Selection Logic
+    if(this.cards.length === 2 && !this.isUno) { this.sayUno(); }
     return cards[Math.floor(Math.random() * cards.length)];
     // return Math.floor(Math.random() * this.cards.length);
   }
