@@ -10,6 +10,8 @@ class Stage {
   finishedPlayers = [];
   num = 0;
   color = null;
+  drawNum = 0;
+  skipNum = 0;
 
   constructor(players) {
     this.players = players;

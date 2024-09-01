@@ -3,14 +3,14 @@ class SpecialCard extends Card {
   constructor({
     name,
     symbol,
-    step,
+    skip,
     drawNum,
     color,
     effect=(stage) => {}
   }) {
     super(name);
     this.symbol = symbol;
-    this.step = step;
+    this.skip = skip;
     this.drawNum = drawNum;
     this.color = color;
     this.effect = effect;

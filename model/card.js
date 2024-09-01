@@ -1,6 +1,6 @@
 class Card {
   name = '';
-  step = 1;
+  skip = 0;
   drawNum = 0;
 
   constructor(name) {
@@ -9,6 +9,10 @@ class Card {
 
   canPut() {
     console.error('canPut() must be implemented');
+  }
+
+  canPutAnother() {
+    console.error('canPutOther() must be implemented');
   }
 
   handleCard() {
