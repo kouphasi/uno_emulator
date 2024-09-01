@@ -22,10 +22,15 @@ class SpecialCard extends Card {
     return this.color === null || this.color.eq(fieldCard.color) || this.symbol === fieldCard.symbol;
   }
 
+  canPutAnother(selectedCard) {
+    return this.symbol === selectedCard.symbol;
+  }
+
   handleCard(stage) {
     stage.setColor(this.color);
     stage.setNum(null);
     stage.addDrawNum(this.drawNum);
+    stage.addSkipNum(this.skip);
     this.effect(stage);
   }
 

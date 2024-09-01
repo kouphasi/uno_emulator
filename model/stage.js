@@ -78,27 +78,37 @@ class Stage {
     this.drawNum = 0;
   }
 
-  putCard(card) {
-    if(card == null) return;
-    card.handleCard(this);
-    this.fieldCards.push(card);
+  addSkipNum(skipNum) {
+    this.skipNum += skipNum;
   }
 
-  nextTurn(card) {
+  resetSkipNum() {
+    this.skipNum = 0;
+  }
+
+  putCards(cards) {
+    if(cards == null) return;
+    cards[cards.length - 1].handleCard(this);
+    this.fieldCards = [...this.fieldCards, ...cards];
+  }
+
+  nextTurn() {
     this.turn++;
     if(this.currentPlayer.cardCount === 0) this.finishPlayer(this.currentPlayer);
-    this.nextPlayerIndex(card?.step || 1);
+    const step = 1 + this.skipNum;
+    this.resetSkipNum();
+    this.nextPlayerIndex(step);
   }
 
   commitWithSingleChance() {
-    return this.currentPlayer.putCard(this);
+    return this.currentPlayer.putCards(this);
   }
 
   commitWithDoubleChance() {
-    const firstCard = this.currentPlayer.putCard(this);
+    const firstCard = this.currentPlayer.putCards(this);
     if(firstCard != null) return firstCard;
     this.currentPlayer.getCard(this.draw());
-    return this.currentPlayer.putCard(this);
+    return this.currentPlayer.putCards(this);
   }
 
   setUpField() {
@@ -114,7 +124,7 @@ class Stage {
 
     // put first card
     const firstCard = this.drawFirstCard();
-    this.putCard(firstCard);
+    this.putCards([firstCard]);
   }
 
   drawFirstCard() {
@@ -136,29 +146,28 @@ class Stage {
         num: this.num,
       }
     )
-    let card = null;
+    let cards = null;
     if(this.drawNum > 0) {
-      card = this.commitWithSingleChance();
-      // if (card != null) this.putCard(card);
-      if (card != null) {
-        console.log('put card', card);
-        this.putCard(card);
+      cards = this.commitWithSingleChance();
+      if (cards != null) {
+        console.log('put card', cards.map(card => card.name));
+        this.putCards(cards);
       }
       else {
         console.log('draw card', this.drawNum);
-        this.drawNum.forEach(() => this.currentPlayer.getCard(this.draw()));
+        for(let i=0; i<this.drawNum; i++) this.currentPlayer.getCard(this.draw());
         this.drawNum = 0;
       }
     } else {
-      card = this.commitWithDoubleChance();
-      console.log('put card', card);
-      this.putCard(card);
+      cards = this.commitWithDoubleChance();
+      console.log('put card', cards?.map(card => card.name));
+      this.putCards(cards);
     }
     if((this.previousPlayer.cardCount == 1 && !this.previousPlayer.isUno) || (this.previousPlayer.cardCount > 1 && this.previousPlayer.isUno)) {
       this.previousPlayer.getCard(this.draw());
       this.previousPlayer.getCard(this.draw());
     }
-    this.nextTurn(card);
+    this.nextTurn();
     console.log('end turn');
   }
 
@@ -169,6 +178,7 @@ class Stage {
   getResult() {
     return {
       winner: this.finishedPlayers[0],
+      otherFinishedPlayers: this.finishedPlayers.slice(1),
       looser: this.playablePlayers[0],
     };
   }

@@ -15,6 +15,10 @@ class NumCard extends Card {
     return fieldCard.color == null || fieldCard.num === this.num || fieldCard.color.eq(this.color);
   }
 
+  canPutAnother(selectedCard) {
+    return selectedCard.num === this.num;
+  }
+
   handleCard(stage) {
     stage.setColor(this.color);
     stage.setNum(this.num);
